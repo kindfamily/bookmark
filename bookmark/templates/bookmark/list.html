@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% block title %}-List{% endblock %}
+
+{% block content %}
+
+<a href="{% url 'bookmark_create' %}">추가</a>
+
+<table>
+{% for object in object_list %}
+    <tr>
+        <td>{{object.id}}</td><td><a href="{{object.get_absolute_url}}">{{object.site_name}}</a></td><td><a href="{{object.url}}" target="_blank">{{object.url}}</a></td><td><a href="{% url 'bookmark_update' object.id %}">수정</a></td><td><a href="{% url 'bookmark_delete' object.id %}">삭제</a></td>
+    </tr>
+{% endfor %}
+</table>
+
+{% endblock %}
