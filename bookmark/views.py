@@ -1,36 +1,58 @@
-# 파이썬 빌트인 모듈
-
-# 장고 모듈
-from django.shortcuts import render
-# 제네릭 뷰 : 웹 프로그래밍에서 많이 사용하는 기능을 미리 만들어 둔 형태
-from django.views.generic.list import ListView
-from django.views.generic.detail import DetailView
-from django.views.generic.edit import CreateView,UpdateView,DeleteView
-# 3rd party
-# 우리가 만든거
+from django.shortcuts import render,redirect, get_object_or_404
 from .models import Bookmark
-# Create your views here.
+from .forms import BookmarkForm
 
-# 제네릭 뷰를 사용하고 싶다면 클래스형 뷰를 사용합니다.
-class BookmarkList(ListView):
-    model = Bookmark
-    template_name = 'bookmark/list.html'
 
-class BookmarkDetail(DetailView):
-    model = Bookmark
-    template_name = 'bookmark/detail.html'
+def bookmark_list(request):
+    bookmark_list = Bookmark.objects.all()
 
-class BookmarkCreate(CreateView):
-    model = Bookmark
-    template_name = 'bookmark/create.html'
-    fields = ['site_name','url']
+    return render(request, 'bookmark/list.html', {
+        'bookmark_list': bookmark_list,
+    })
 
-class BookmarkUpdate(UpdateView):
-    model = Bookmark
-    template_name = 'bookmark/update.html'
-    fields = ['site_name', 'url']
+def bookmark_new(request):
+    if request.method == 'POST':
+        form = BookmarkForm(request.POST)
+        if form.is_valid():
+            bookmark = Bookmark()
+            bookmark.site_name = form.cleaned_data['site_name']
+            bookmark.url = form.cleaned_data['url']
+            bookmark.save()
+            return redirect('bookmark:bookmark_list')
+    else:
+        form = BookmarkForm()
+    return render(request, 'bookmark/create.html', {
+        'form': form,
+    })
 
-class BookmarkDelete(DeleteView):
-    model = Bookmark
-    template_name = 'bookmark/delete.html'
-    success_url = '/'
+def bookmark_edit(request, pk):
+    bookmark = get_object_or_404(Bookmark, pk=pk)
+
+    if request.method == 'POST':
+        form = BookmarkForm(request.POST, instance=bookmark)
+        if form.is_valid():
+            bookmark.site_name = form.cleaned_data['site_name']
+            bookmark.url = form.cleaned_data['url']
+            bookmark.save()
+            return redirect('bookmark:bookmark_list')
+    else:
+        form = BookmarkForm(instance=bookmark)
+    return render(request, 'bookmark/update.html', {
+        'bookmark': bookmark,
+        'form': form,
+    })
+
+def bookmark_delete(request, pk):
+    bookmark = get_object_or_404(Bookmark, pk=pk)
+
+    if request.method == 'POST':
+        bookmark.delete()
+        return redirect('bookmark:bookmark_list')
+
+
+
+
+
+
+
+

@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block content %}
+<a href="{% url 'bookmark:bookmark_new' %}">추가</a>
+<table>
+{% for object in object_list %}
+    <p>
+        <div>{{ object.site_name }}</div>
+        <span><a href="http://{{ object.url }}">{{ object.url }}</a></span>
+        <span><a href="{% url 'bookmark:bookmark_edit' object.id %}">수정</a></span>
+        <span>
+            <form action="{% url 'bookmark:bookmark_delete' object.id %}" method="post">
+                {% csrf_token %}
+                <input type="submit" value="삭제">
+            </form>
+        </span>
+    </p>
+{% endfor %}
+</table>
+{% endblock %}
