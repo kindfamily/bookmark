@@ -8,6 +8,4 @@ class BookmarkForm(forms.ModelForm):
 
     class Meta:
         model = Bookmark
-        fields = ['site_name', 'url']
-        # model에서 불러오지 않을 필드를 지정
-        # fields = '__all__' 로 전체를 지정하수도 있음
+        fields = '__all__'

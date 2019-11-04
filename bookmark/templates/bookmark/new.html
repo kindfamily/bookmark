@@ -6,9 +6,6 @@
 <link rel="stylesheet" href="{% static 'css/style.css' %}">
 {% endblock %}
 
-
-
-
 {% block content %}
 <section id="container">
     <header id="header">
@@ -17,15 +14,13 @@
     </header>
 
     <section class="btn_container">
-        <button class="home"><a href="{% url 'bookmark:bookmark_list' %}" class="home">HOME</a></button>
-        <button class="create active"><a href="{% url 'bookmark:bookmark_new' %}" class="create active">CREATE</a></button>
+        <button class="home"><a href="{% url 'bookmark:list' %}" class="home">HOME</a></button>
+        <button class="create active"><a href="{% url 'bookmark:new' %}" class="create active">CREATE</a></button>
     </section>
 
 
     <section id="edit_container">
 
-
-        
         <form action="" method="post" enctype="multipart/form-data">
             {% csrf_token %}
             {{ form.as_p }}

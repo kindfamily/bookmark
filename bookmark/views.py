@@ -3,14 +3,14 @@ from .models import Bookmark
 from .forms import BookmarkForm
 
 
-def bookmark_list(request):
-    bookmark_list = Bookmark.objects.all()
+def list(request):
+    list = Bookmark.objects.all()
 
     return render(request, 'bookmark/list.html', {
-        'bookmark_list': bookmark_list,
+        'list': list,
     })
 
-def bookmark_new(request):
+def new(request):
     if request.method == 'POST':
         form = BookmarkForm(request.POST)
         if form.is_valid():
@@ -18,14 +18,14 @@ def bookmark_new(request):
             bookmark.site_name = form.cleaned_data['site_name']
             bookmark.url = form.cleaned_data['url']
             bookmark.save()
-            return redirect('bookmark:bookmark_list')
+            return redirect('bookmark:list')
     else:
         form = BookmarkForm()
-    return render(request, 'bookmark/create.html', {
+    return render(request, 'bookmark/new.html', {
         'form': form,
     })
 
-def bookmark_edit(request, pk):
+def edit(request, pk):
     bookmark = get_object_or_404(Bookmark, pk=pk)
 
     if request.method == 'POST':
@@ -34,20 +34,20 @@ def bookmark_edit(request, pk):
             bookmark.site_name = form.cleaned_data['site_name']
             bookmark.url = form.cleaned_data['url']
             bookmark.save()
-            return redirect('bookmark:bookmark_list')
+            return redirect('bookmark:list')
     else:
         form = BookmarkForm(instance=bookmark)
-    return render(request, 'bookmark/update.html', {
+    return render(request, 'bookmark/edit.html', {
         'bookmark': bookmark,
         'form': form,
     })
 
-def bookmark_delete(request, pk):
+def delete(request, pk):
     bookmark = get_object_or_404(Bookmark, pk=pk)
 
     if request.method == 'POST':
         bookmark.delete()
-        return redirect('bookmark:bookmark_list')
+        return redirect('bookmark:list')
 
 
 

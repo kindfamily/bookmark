@@ -11,35 +11,32 @@
 {% block content %}
  <section id="container">
       <header id="header">
-        <div><img src="{% static 'img/bookmark.png' %}" alt="북마크아이콘" /></div>
+        <div><img src="{% static 'img/bookmark.png' %}"></div>
         <div>BOOK-MARK</div>
       </header>
 
-
       <section class="btn_container">
-
-        <button class="">
-          <a href="{% url 'bookmark:bookmark_list' %}" class="active home">HOME</a>
+        <button>
+          <a href="{% url 'bookmark:list' %}" class="active home">HOME</a>
         </button>
-        <button class="">
-          <a href="{% url 'bookmark:bookmark_new' %}" class="create">CREATE</a>
+        <button>
+          <a href="{% url 'bookmark:new' %}" class="create">CREATE</a>
         </button>
       </section>
 
-{% if bookmark_list %}
+{% if list %}
 <section id="over_container">
     <div class="scroll_inner">
 
-
-        {% for bookmark_list in bookmark_list %}
+        {% for bookmark_list in list %}
         <article class="list01">
             <span class="site_name">{{ bookmark_list.site_name }}</span>
             <span class="line"></span>
             <span class="site_url"><a href="#">{{ bookmark_list.url }}</a></span>
 
             <div class="form_container">
-                <a href="{% url 'bookmark:bookmark_edit' bookmark_list.id %}">edit</a>
-                    <form action="{% url 'bookmark:bookmark_delete' bookmark_list.id %}" method="post">
+                <a href="{% url 'bookmark:edit' bookmark_list.id %}">edit</a>
+                    <form action="{% url 'bookmark:delete' bookmark_list.id %}" method="post">
                         {% csrf_token %}
                         <input type="submit" value="delete" />
                     </form>
@@ -49,7 +46,6 @@
 
     </div>
 </section>
-
 
 {% else %}
 
@@ -61,7 +57,5 @@
     </div>
 
 {% endif %}
-
-
 </section>
 {% endblock %}
